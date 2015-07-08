@@ -1,0 +1,17 @@
+[package]
+name = "rust-sudoku"
+version = "0.0.1"
+authors = ["Andrey Konovalov <adech.fo@gmail.com>"]
+
+[[bin]]
+name = "rust-sudoku"
+path = "src/main.rs"
+
+[dependencies]
+piston = "*"
+piston_window = "*"
+piston2d-opengl_graphics = "*"
+piston2d-graphics = "*"
+pistoncore-sdl2_window = "*"
+freetype-rs = "*"
+find_folder = "*"
