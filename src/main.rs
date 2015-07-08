@@ -66,18 +66,38 @@ fn main() {
     let mut face = freetype.new_face(&font, 0).unwrap();
     face.set_pixel_sizes(0, font_size).unwrap();
 
-    let mut mouse_x;
-    let mut mouse_y;
+    let mut mouse_x = 0.0;
+    let mut mouse_y = 0.0;
 
     let mut field = [[0u8; 9]; 9];
     field[0][0] = 1;
     field[3][0] = 2;
+    field[3][5] = 9;
+
+    let mut selected_cell_x = -1;
+    let mut selected_cell_y = -1;
 
     for e in window.events() {
         if let Some(args) = e.render_args() {
             gl.draw(args.viewport(), |c, g| {
                 use graphics::*;
                 clear([1.0; 4], g);
+
+                let pointed_cell_x = (mouse_x / cell_size_x as f64).floor();
+                let pointed_cell_y = (mouse_y / cell_size_y as f64).floor();
+                rectangle([0.95, 0.95, 0.95, 1.0],
+                          [pointed_cell_x * cell_size_x,
+                           pointed_cell_y * cell_size_y,
+                           cell_size_x, cell_size_y],
+                          c.transform, g);
+
+                if selected_cell_x != -1 && selected_cell_y != -1 {
+                    rectangle([0.8, 0.8, 0.8, 1.0],
+                              [(selected_cell_x as f64) * cell_size_x,
+                               (selected_cell_y as f64) * cell_size_y,
+                               cell_size_x, cell_size_y],
+                              c.transform, g);
+                }
 
                 for row in 0..9 {
                     for col in 0..9 {
@@ -112,13 +132,25 @@ fn main() {
             match button {
                 piston::input::Button::Mouse(mouse_button) => {
                     match mouse_button {
-                        piston::input::MouseButton::Right => {
-                            println!("Pressed Mouse::Right");
+                        piston::input::MouseButton::Left => {
+                            println!("Pressed Mouse::Left");
+                            selected_cell_x = (mouse_x / cell_size_x) as i32;
+                            selected_cell_y = (mouse_y / cell_size_y) as i32;
                         },
                         _ => println!("Pressed mouse {:?}", mouse_button)
                     }
                 },
-                _ => println!("Pressed {:?}", button)
+                piston::input::Button::Keyboard(key) => {
+                    match key {
+                        piston::input::Key::D1 => {
+                            if selected_cell_x != -1 && selected_cell_y != -1 {
+                                field[selected_cell_y as usize]
+                                     [selected_cell_x as usize] = 1;
+                            }
+                        },
+                        _ => println!("Pressed {:?}", button)
+                    }
+                }
             }
         }
 
