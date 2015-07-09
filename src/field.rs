@@ -75,7 +75,7 @@ impl Field {
         let section = Coords{ x: coords.x / 3, y: coords.y / 3};
         for x in section.x * 3 .. (section.x + 1) * 3 {
             for y in section.y * 3 .. (section.y + 1) * 3 {
-                if x != coords.x && y != coords.y {
+                if x != coords.x || y != coords.y {
                     if let Some(cell_digit) = self.get_cell(x, y).digit {
                         if cell_digit == digit {
                             return Some(Coords{ x: x, y: y});
