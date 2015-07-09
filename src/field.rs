@@ -184,7 +184,7 @@ impl Field {
         }
         let coords = empty_cell.unwrap();
 
-        let mut digits = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+        let mut digits: Vec<u8> = (1..10).collect();
         rand::thread_rng().shuffle(&mut digits);
 
         for &digit in digits.iter() {
