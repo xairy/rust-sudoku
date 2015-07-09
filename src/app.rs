@@ -119,7 +119,7 @@ impl App {
             for n in 1..9 {
                 let mut thick = 2.0;
                 if n % 3 == 0 {
-                    thick = 6.0;
+                    thick = 8.0;
                 }
                 rectangle([0.0, 0.0, 0.0, 1.0],
                           [(n as f64) * self.settings.cell_size.x - thick / 2.0,
