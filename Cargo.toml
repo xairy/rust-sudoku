@@ -1,6 +1,6 @@
 [package]
 name = "rust-sudoku"
-version = "0.0.1"
+version = "0.1.0"
 authors = ["Andrey Konovalov <adech.fo@gmail.com>"]
 
 [[bin]]
