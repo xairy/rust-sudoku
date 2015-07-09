@@ -178,9 +178,13 @@ impl App {
         }
         if pressed_key == &Key::S {
             self.field.fill_solution();
+            self.conflicting_cell = None;
+            self.selected_cell = None;
         }
         if pressed_key == &Key::R {
             self.field.fill_random();
+            self.conflicting_cell = None;
+            self.selected_cell = None;
         }
     }
 
