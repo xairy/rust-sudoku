@@ -39,8 +39,6 @@ impl Field {
                 if example[y][x] != 0 {
                     self.cells[y][x].digit = Some(example[y][x]);
                     self.cells[y][x].fixed = true;
-                } else {
-                    self.cells[y][x].digit = None;
                 }
             }
         }
@@ -52,7 +50,7 @@ impl Field {
 
     pub fn find_conflicts(&mut self, coords: &Coords,
                           digit: u8) -> Option<Coords> {
-        for x in 0..8 {
+        for x in 0..9 {
             if x != coords.x {
                 if let Some(cell_digit) = self.get_cell(x, coords.y).digit {
                     if cell_digit == digit {
@@ -62,7 +60,7 @@ impl Field {
             }
         }
 
-        for y in 0..8 {
+        for y in 0..9 {
             if y != coords.y {
                 if let Some(cell_digit) = self.get_cell(coords.x, y).digit {
                     if cell_digit == digit {
