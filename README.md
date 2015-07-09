@@ -6,7 +6,7 @@ Work in progress.
 
 ## Controls
 
-Use mouse to select cells.
+Use mouse or arrow keys to select cells.
 
 Keys:
 * **1-9** - fill in a digit

@@ -186,6 +186,30 @@ impl App {
             self.conflicting_cell = None;
             self.selected_cell = None;
         }
+        if pressed_key == &Key::Up {
+            match self.selected_cell {
+                Some(ref mut cell) => if cell.y > 0 { cell.y -= 1; },
+                None => self.selected_cell = Some(field::Coords{ x: 0, y: 0})
+            }
+        }
+        if pressed_key == &Key::Down {
+            match self.selected_cell {
+                Some(ref mut cell) => if cell.y < 8 { cell.y += 1; },
+                None => self.selected_cell = Some(field::Coords{ x: 0, y: 0})
+            }
+        }
+        if pressed_key == &Key::Left {
+            match self.selected_cell {
+                Some(ref mut cell) => if cell.x > 0 { cell.x -= 1; },
+                None => self.selected_cell = Some(field::Coords{ x: 0, y: 0})
+            }
+        }
+        if pressed_key == &Key::Right {
+            match self.selected_cell {
+                Some(ref mut cell) => if cell.x < 8 { cell.x += 1; },
+                None => self.selected_cell = Some(field::Coords{ x: 0, y: 0})
+            }
+        }
     }
 
     fn on_mouse_click(&mut self, button: &MouseButton) {
