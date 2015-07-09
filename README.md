@@ -3,6 +3,8 @@ rust-sudoku
 
 A Sudoku implementation in Rust.
 
+![Screenshot](screenshot.png?raw=true "Screenshot")
+
 ## Controls
 
 Use mouse or arrow keys to select cells.
