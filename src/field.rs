@@ -15,8 +15,34 @@ pub struct Field {
 
 impl Field {
     pub fn new() -> Field {
-        Field {
+        let mut field = Field {
             cells: [[Cell{ digit: None, fixed: false }; 9]; 9]
+        };
+        field.fill_example();
+        field
+    }
+
+    pub fn fill_example(&mut self) {
+        let example = [
+            [7, 2, 9, 1, 8, 4, 0, 5, 0],
+            [0, 0, 4, 3, 0, 0, 0, 1, 7],
+            [0, 0, 0, 0, 0, 0, 9, 0, 2],
+            [0, 0, 0, 9, 5, 0, 0, 0, 0],
+            [3, 8, 0, 4, 0, 1, 0, 7, 9],
+            [0, 0, 0, 0, 2, 8, 0, 0, 0],
+            [8, 0, 6, 0, 0, 0, 0, 0, 0],
+            [5, 9, 0, 0, 0, 7, 6, 0, 0],
+            [0, 7, 0, 6, 4, 5, 1, 9, 8]
+        ];
+        for y in 0..9 {
+            for x in 0..9 {
+                if example[y][x] != 0 {
+                    self.cells[y][x].digit = Some(example[y][x]);
+                    self.cells[y][x].fixed = true;
+                } else {
+                    self.cells[y][x].digit = None;
+                }
+            }
         }
     }
 

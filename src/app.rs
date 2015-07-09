@@ -52,6 +52,21 @@ impl App {
                        self.settings.cell_size.x, self.settings.cell_size.y],
                       c.transform, g);
 
+            for y in 0..9 {
+                for x in 0..9 {
+                    let cell = self.field.get_cell(x, y);
+                    if cell.fixed {
+                        rectangle([0.9, 0.9, 0.9, 1.0],
+                            [(x as f64) * self.settings.cell_size.x,
+                             (y as f64) * self.settings.cell_size.y,
+                             self.settings.cell_size.x,
+                             self.settings.cell_size.y],
+                            c.transform, g);
+
+                    }
+                }
+            }
+
             if let Some(ref cell) = self.conflicting_cell {
                 rectangle([0.9, 0.8, 0.8, 1.0],
                           [(cell.x as f64) * self.settings.cell_size.x,
@@ -68,13 +83,13 @@ impl App {
                           c.transform, g);
             }
 
-            for row in 0..9 {
-                for col in 0..9 {
-                    if let Some(ref digit) = self.field.cells[row][col].digit {
+            for y in 0..9 {
+                for x in 0..9 {
+                    if let Some(ref digit) = self.field.cells[y][x].digit {
                         let transform = c.transform.trans(
-                            (col as f64) * self.settings.cell_size.x +
+                            (x as f64) * self.settings.cell_size.x +
                                 self.settings.text_offset.x,
-                            (row as f64) * self.settings.cell_size.y +
+                            (y as f64) * self.settings.cell_size.y +
                                 self.settings.text_offset.y);
                         font::render_text(face, g, transform,
                                     &digit.to_string());
@@ -119,14 +134,16 @@ impl App {
         for &(key, digit) in key_digit_mapping.iter() {
             if pressed_key == &key {
                 if let Some(ref cell) = self.selected_cell {
-                    match self.field.find_conflicts(cell, digit) {
-                        Some(coords) => {
-                            self.conflicting_cell = Some(coords);
-                        },
-                        None => {
-                            self.field.cells[cell.y as usize]
-                                [cell.x as usize].digit = Some(digit);
-                            self.conflicting_cell = None;
+                    if !self.field.get_cell(cell.x, cell.y).fixed {
+                        match self.field.find_conflicts(cell, digit) {
+                            Some(coords) => {
+                                self.conflicting_cell = Some(coords);
+                            },
+                            None => {
+                                self.field.get_cell(cell.x, cell.y).digit =
+                                    Some(digit);
+                                self.conflicting_cell = None;
+                            }
                         }
                     }
                 }
@@ -134,8 +151,10 @@ impl App {
         }
         if pressed_key == &Key::Backspace {
             if let Some(ref cell) = self.selected_cell {
-                self.field.cells[cell.y as usize]
-                                [cell.x as usize].digit = None;
+                if !self.field.get_cell(cell.x, cell.y).fixed {
+                    self.field.get_cell(cell.x, cell.y).digit = None;
+                    self.conflicting_cell = None;
+                }
             }
         }
     }
