@@ -101,15 +101,24 @@ impl App {
         }
     }
 
-    fn on_key_down(&mut self, key: &Key) {
-        match key {
-            &Key::D1 => {
+    fn on_key_down(&mut self, pressed_key: &Key) {
+        let key_digit_mapping = [
+            (Key::D1, 1), (Key::D2, 2), (Key::D3, 3), 
+            (Key::D4, 4), (Key::D5, 5), (Key::D6, 6), 
+            (Key::D7, 7), (Key::D8, 8), (Key::D9, 9) ];
+        for &(key, digit) in key_digit_mapping.iter() {
+            if pressed_key == &key {
                 if let Some(ref cell) = self.selected_cell {
                     self.field.cells[cell.y as usize]
-                                    [cell.x as usize].digit = Some(1);
+                                    [cell.x as usize].digit = Some(digit);
                 }
-            },
-            _ => println!("Pressed {:?}", key)
+            }
+        }
+        if pressed_key == &Key::Backspace {
+            if let Some(ref cell) = self.selected_cell {
+                self.field.cells[cell.y as usize]
+                                [cell.x as usize].digit = None;
+            }
         }
     }
 
