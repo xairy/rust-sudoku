@@ -19,7 +19,7 @@ struct Vec2f {
 pub struct App {
     settings: settings::Settings,
     field: field::Field,
-    selected_cell: Option<field::CellCoords>,
+    selected_cell: Option<field::Coords>,
     mouse_coords: Vec2f
 }
 
@@ -39,7 +39,7 @@ impl App {
             use graphics::*;
             clear([1.0; 4], g);
 
-            let pointed_cell = field::CellCoords{
+            let pointed_cell = field::Coords{
                 x: (self.mouse_coords.x / self.settings.cell_size.x as f64)
                     .floor() as u8,
                 y: (self.mouse_coords.y / self.settings.cell_size.y as f64)
@@ -109,8 +109,10 @@ impl App {
         for &(key, digit) in key_digit_mapping.iter() {
             if pressed_key == &key {
                 if let Some(ref cell) = self.selected_cell {
-                    self.field.cells[cell.y as usize]
-                                    [cell.x as usize].digit = Some(digit);
+                    if let None = self.field.find_conflicts(cell, digit) {
+                        self.field.cells[cell.y as usize]
+                                        [cell.x as usize].digit = Some(digit);
+                    }
                 }
             }
         }
@@ -126,7 +128,7 @@ impl App {
         match button {
             &MouseButton::Left => {
                 println!("Pressed mouse left");
-                self.selected_cell = Some(field::CellCoords{
+                self.selected_cell = Some(field::Coords{
                     x: (self.mouse_coords.x / self.settings.cell_size.x)
                         as u8,
                     y: (self.mouse_coords.y / self.settings.cell_size.y)
