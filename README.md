@@ -11,7 +11,9 @@ Use mouse to select cells.
 Keys:
 * **1-9** - fill in a digit
 * **Backspace** - clear a cell
+* **R** - generate new
 * **S** - show solution
+* **Esc** - exit
 
 ## Requirements
 

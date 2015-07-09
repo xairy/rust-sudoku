@@ -8,6 +8,7 @@ name = "rust-sudoku"
 path = "src/main.rs"
 
 [dependencies]
+rand = "*"
 piston = "*"
 piston_window = "*"
 piston2d-opengl_graphics = "*"
