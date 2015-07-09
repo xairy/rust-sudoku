@@ -4,6 +4,15 @@ rust-sudoku
 A Sudoku implementation in Rust.
 Work in progress.
 
+## Controls
+
+Use mouse to select cells.
+
+Keys:
+* **1-9** - fill in a digit
+* **Backspace** - clear a cell
+* **S** - show solution
+
 ## Requirements
 
 1. [Rust](http://www.rust-lang.org/install.html)
