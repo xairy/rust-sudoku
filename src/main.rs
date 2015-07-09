@@ -2,16 +2,17 @@ extern crate piston;
 extern crate piston_window;
 extern crate graphics;
 extern crate opengl_graphics;
-extern crate freetype;
+
+use std::path::Path;
 
 use piston_window::PistonWindow;
 use piston::window::WindowSettings;
 use piston::event::*;
 use opengl_graphics::{ GlGraphics, OpenGL };
+use opengl_graphics::glyph_cache::GlyphCache;
 
 mod app;
 mod field;
-mod font;
 mod settings;
 
 fn main() {
@@ -25,13 +26,15 @@ fn main() {
         .opengl(opengl)
         .into();
     let ref mut gl = GlGraphics::new(opengl);
-    let mut face = font::make_face("Verdana.ttf", settings.font_size);
+
+    let font_path = Path::new("assets/Verdana.ttf");
+    let ref mut cache = GlyphCache::new(font_path).unwrap();
 
     let mut app = app::App::new(settings);
 
     for e in window.events() {
         if let Some(args) = e.render_args() {
-            app.on_render(&args, gl, &mut face);
+            app.on_render(&args, gl, cache);
         }
 
         if let Some(button) = e.press_args() {

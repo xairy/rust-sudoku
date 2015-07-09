@@ -1,14 +1,13 @@
 extern crate graphics;
 extern crate piston;
 extern crate opengl_graphics;
-extern crate freetype;
 
 use piston::event::*;
 use piston::input::*;
 use opengl_graphics::GlGraphics;
+use opengl_graphics::glyph_cache::GlyphCache;
 
 use field;
-use font;
 use settings;
 
 struct Vec2f {
@@ -36,7 +35,7 @@ impl App {
     }
 
     pub fn on_render(&mut self, args: &RenderArgs,
-                     gl: &mut GlGraphics, face: &mut freetype::Face) {
+                     gl: &mut GlGraphics, cache: &mut GlyphCache) {
         gl.draw(args.viewport(), |c, g| {
             use graphics::*;
             clear([1.0; 4], g);
@@ -110,8 +109,9 @@ impl App {
                                 self.settings.text_offset.x,
                             (y as f64) * self.settings.cell_size.y +
                                 self.settings.text_offset.y);
-                        font::render_text(face, g, transform,
-                                    &digit.to_string());
+                        let text = graphics::Text::new(self.settings.font_size);
+                        text.draw(&digit.to_string(), cache,
+                                  &c.draw_state, transform, g);
                     }
                 }
             }
