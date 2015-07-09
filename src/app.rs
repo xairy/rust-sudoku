@@ -18,18 +18,20 @@ struct Vec2f {
 
 pub struct App {
     settings: settings::Settings,
+    mouse_coords: Vec2f,
     field: field::Field,
     selected_cell: Option<field::Coords>,
-    mouse_coords: Vec2f
+    conflicting_cell: Option<field::Coords>
 }
 
 impl App {
     pub fn new(settings: settings::Settings) -> App {
         App {
             settings: settings,
+            mouse_coords: Vec2f{ x: 0.0, y: 0.0 },
             field: field::Field::new(),
             selected_cell: None,
-            mouse_coords: Vec2f{ x: 0.0, y: 0.0 }
+            conflicting_cell: None
         }
     }
 
@@ -50,8 +52,16 @@ impl App {
                        self.settings.cell_size.x, self.settings.cell_size.y],
                       c.transform, g);
 
+            if let Some(ref cell) = self.conflicting_cell {
+                rectangle([0.9, 0.8, 0.8, 1.0],
+                          [(cell.x as f64) * self.settings.cell_size.x,
+                           (cell.y as f64) * self.settings.cell_size.y,
+                           self.settings.cell_size.x, self.settings.cell_size.y],
+                          c.transform, g);
+            }
+
             if let Some(ref cell) = self.selected_cell {
-                rectangle([0.8, 0.8, 0.8, 1.0],
+                rectangle([0.8, 0.9, 0.8, 1.0],
                           [(cell.x as f64) * self.settings.cell_size.x,
                            (cell.y as f64) * self.settings.cell_size.y,
                            self.settings.cell_size.x, self.settings.cell_size.y],
@@ -109,9 +119,15 @@ impl App {
         for &(key, digit) in key_digit_mapping.iter() {
             if pressed_key == &key {
                 if let Some(ref cell) = self.selected_cell {
-                    if let None = self.field.find_conflicts(cell, digit) {
-                        self.field.cells[cell.y as usize]
-                                        [cell.x as usize].digit = Some(digit);
+                    match self.field.find_conflicts(cell, digit) {
+                        Some(coords) => {
+                            self.conflicting_cell = Some(coords);
+                        },
+                        None => {
+                            self.field.cells[cell.y as usize]
+                                [cell.x as usize].digit = Some(digit);
+                            self.conflicting_cell = None;
+                        }
                     }
                 }
             }
