@@ -85,8 +85,35 @@ impl Field {
             }
         }
 
-        println!("{} {}", section.x, section.y);
-        
         None
+    }
+
+    pub fn fill_solution(&mut self) -> bool {
+        let mut empty_cell: Option<Coords> = None;
+        'outer: for y in 0..9 {
+            'inner: for x in 0..9 {
+                if let None = self.get_cell(x, y).digit {
+                    empty_cell = Some(Coords{ x: x.clone(), y: y.clone() });
+                    break 'outer;
+                }
+            }
+        }
+
+        if let None = empty_cell {
+            return true;
+        }
+        let coords = empty_cell.unwrap();
+
+        for digit in 1..10 {
+            if let None = self.find_conflicts(&coords, digit) { 
+                self.get_cell(coords.x, coords.y).digit = Some(digit);
+                if self.fill_solution() {
+                    return true;
+                }
+                self.get_cell(coords.x, coords.y).digit = None;
+            }
+        }
+
+        false
     }
 }

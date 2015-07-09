@@ -157,6 +157,9 @@ impl App {
                 }
             }
         }
+        if pressed_key == &Key::S {
+            self.field.fill_solution();
+        }
     }
 
     fn on_mouse_click(&mut self, button: &MouseButton) {
