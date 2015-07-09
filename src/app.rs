@@ -62,7 +62,26 @@ impl App {
                              self.settings.cell_size.x,
                              self.settings.cell_size.y],
                             c.transform, g);
+                    }
+                }
+            }
 
+            if let Some(ref cell) = self.selected_cell {
+                if let Some(digit) = self.field.get_cell(cell.x, cell.y).digit {
+                    for y in 0..9 {
+                        for x in 0..9 {
+                            if let Some(other_digit) =
+                                    self.field.get_cell(x, y).digit {
+                                if other_digit == digit {
+                                    rectangle([0.8, 0.8, 0.9, 1.0],
+                                        [(x as f64) * self.settings.cell_size.x,
+                                         (y as f64) * self.settings.cell_size.y,
+                                         self.settings.cell_size.x,
+                                         self.settings.cell_size.y],
+                                        c.transform, g);
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -166,22 +185,15 @@ impl App {
     }
 
     fn on_mouse_click(&mut self, button: &MouseButton) {
-        match button {
-            &MouseButton::Left => {
-                println!("Pressed mouse left");
-                self.selected_cell = Some(field::Coords{
-                    x: (self.mouse_coords.x / self.settings.cell_size.x)
-                        as u8,
-                    y: (self.mouse_coords.y / self.settings.cell_size.y)
-                        as u8 });
-            },
-            _ => println!("Pressed mouse {:?}", button)
+        if let &MouseButton::Left = button {
+            self.selected_cell = Some(field::Coords{
+                x: (self.mouse_coords.x / self.settings.cell_size.x) as u8,
+                y: (self.mouse_coords.y / self.settings.cell_size.y) as u8 });
         }
     }
 
     pub fn on_mouse_move(&mut self, args: &[f64; 2]) {
         self.mouse_coords.x = args[0];
         self.mouse_coords.y = args[1];
-        println!("Mouse: {} {}", self.mouse_coords.x, self.mouse_coords.y);
     }
 }
