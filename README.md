@@ -2,7 +2,6 @@ rust-sudoku
 ===========
 
 A Sudoku implementation in Rust.
-Work in progress.
 
 ## Controls
 
