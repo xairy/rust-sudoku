@@ -18,7 +18,7 @@ mod settings;
 fn main() {
     let settings = settings::Settings::new();
 
-    let opengl = OpenGL::_3_2;
+    let opengl = OpenGL::V3_2;
     let window: PistonWindow =
         WindowSettings::new("Sudoku",
             [(settings.wind_size.x as u32), (settings.wind_size.y as u32)])
