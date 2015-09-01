@@ -1,6 +1,6 @@
 [package]
 name = "rust-sudoku"
-version = "0.1.1"
+version = "0.1.2"
 authors = ["Andrey Konovalov <adech.fo@gmail.com>"]
 
 [[bin]]
@@ -11,5 +11,6 @@ path = "src/main.rs"
 rand = "*"
 piston = "*"
 piston_window = "*"
+pistoncore-glutin_window = "*"
 piston2d-opengl_graphics = "*"
 piston2d-graphics = "*"

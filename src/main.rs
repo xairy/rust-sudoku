@@ -1,15 +1,16 @@
 extern crate piston;
 extern crate piston_window;
+extern crate glutin_window;
 extern crate graphics;
 extern crate opengl_graphics;
 
-use std::path::Path;
-
-use piston_window::PistonWindow;
 use piston::window::WindowSettings;
-use piston::event::*;
+use piston::input::*;
+use piston::event_loop::*;
+use glutin_window::GlutinWindow;
 use opengl_graphics::{ GlGraphics, OpenGL };
 use opengl_graphics::glyph_cache::GlyphCache;
+use std::path::Path;
 
 mod app;
 mod field;
@@ -19,12 +20,13 @@ fn main() {
     let settings = settings::Settings::new();
 
     let opengl = OpenGL::V3_2;
-    let window: PistonWindow =
+    let window: GlutinWindow =
         WindowSettings::new("Sudoku",
             [(settings.wind_size.x as u32), (settings.wind_size.y as u32)])
         .exit_on_esc(true)
         .opengl(opengl)
-        .into();
+        .build()
+        .unwrap();
     let ref mut gl = GlGraphics::new(opengl);
 
     let font_path = Path::new("assets/Verdana.ttf");

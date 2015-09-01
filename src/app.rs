@@ -2,7 +2,6 @@ extern crate graphics;
 extern crate piston;
 extern crate opengl_graphics;
 
-use piston::event::*;
 use piston::input::*;
 use opengl_graphics::GlGraphics;
 use opengl_graphics::glyph_cache::GlyphCache;
