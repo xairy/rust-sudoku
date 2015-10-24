@@ -141,6 +141,7 @@ impl App {
             &Button::Mouse(button) => {
                 self.on_mouse_click(&button);
             }
+            &Button::Joystick(_) => {}
         }
     }
 
