@@ -92,7 +92,7 @@ impl Field {
         loop {
             let mut x;
             let mut y;
-            let mut digit;
+            let digit;
 
             loop {
                 x = rand::thread_rng().gen_range(0u8, 9u8);
