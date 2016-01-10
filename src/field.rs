@@ -1,7 +1,5 @@
-extern crate rand;
-
-// FIXME(xairy): self::rand? WTF?
-use self::rand::Rng;
+use rand;
+use rand::Rng;
 
 pub struct Coords {
     pub x: u8,
