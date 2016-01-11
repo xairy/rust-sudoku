@@ -151,7 +151,7 @@ impl App {
             if pressed_key == &key {
                 if let Some(ref cell) = self.selected_cell {
                     if !self.field.get_cell(cell.x, cell.y).fixed {
-                        match self.field.find_conflicts(cell, digit) {
+                        match self.field.find_conflict(cell, digit) {
                             Some(coords) => {
                                 self.conflicting_cell = Some(coords);
                             },

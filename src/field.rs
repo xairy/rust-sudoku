@@ -30,7 +30,7 @@ impl Field {
         &mut self.cells[y as usize][x as usize]
     }
 
-    pub fn find_conflicts(&mut self, coords: &Coords,
+    pub fn find_conflict(&mut self, coords: &Coords,
                           digit: u8) -> Option<Coords> {
         for x in 0..9 {
             if x != coords.x {
@@ -143,9 +143,8 @@ impl Field {
     }
 
     pub fn fill_solution(&mut self) {
-        let solution = self.find_solution();
-        if let Some(s) = solution {
-            self.cells = s.cells.clone();
+        if let Some(s) = self.find_solution() {
+            self.cells = s.cells;
         }
     }
 
@@ -186,7 +185,7 @@ impl Field {
         rand::thread_rng().shuffle(&mut digits);
 
         for &digit in digits.iter() {
-            if self.find_conflicts(&coords, digit).is_none() { 
+            if self.find_conflict(&coords, digit).is_none() { 
                 self.get_cell(coords.x, coords.y).digit = Some(digit);
                 if self.find_solutions_impl(solutions, stop_at) {
                     return true;
