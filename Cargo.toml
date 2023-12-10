@@ -3,14 +3,6 @@ name = "rust-sudoku"
 version = "0.1.2"
 authors = ["Andrey Konovalov <adech.fo@gmail.com>"]
 
-[[bin]]
-name = "rust-sudoku"
-path = "src/main.rs"
-
 [dependencies]
-rand = "*"
-piston = "*"
-piston_window = "*"
-pistoncore-glutin_window = "*"
-piston2d-opengl_graphics = "*"
-piston2d-graphics = "*"
+rand = "0.8"
+piston_window = "0.131"
