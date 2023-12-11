@@ -1,16 +1,7 @@
-extern crate piston;
 extern crate piston_window;
-extern crate glutin_window;
-extern crate graphics;
-extern crate opengl_graphics;
 extern crate rand;
 
-use piston::window::WindowSettings;
-use piston::input::*;
-use piston::event_loop::*;
-use glutin_window::GlutinWindow;
-use opengl_graphics::{ GlGraphics, OpenGL };
-use opengl_graphics::glyph_cache::GlyphCache;
+use piston_window::*;
 use std::path::Path;
 
 mod app;
@@ -21,25 +12,27 @@ fn main() {
     let settings = settings::Settings::new();
 
     let opengl = OpenGL::V3_2;
-    let mut window: GlutinWindow =
-        WindowSettings::new("Sudoku",
-            [(settings.wind_size.x as u32), (settings.wind_size.y as u32)])
-        .exit_on_esc(true)
-        .opengl(opengl)
-        .build()
-        .unwrap();
-    let ref mut gl = GlGraphics::new(opengl);
+    let mut window: PistonWindow = WindowSettings::new(
+        "Sudoku",
+        [(settings.wind_size.x as u32), (settings.wind_size.y as u32)],
+    )
+    .exit_on_esc(true)
+    .resizable(false)
+    .graphics_api(opengl)
+    .build()
+    .unwrap();
 
     let font_path = Path::new("assets/Verdana.ttf");
-    let ref mut cache = GlyphCache::new(font_path).unwrap();
+    let mut cache = window.load_font(font_path).unwrap();
 
     let mut app = app::App::new(settings);
 
-    let mut events = window.events();
-    while let Some(e) = events.next(&mut window) {
-        if let Some(args) = e.render_args() {
-            app.on_render(&args, gl, cache);
-        }
+    while let Some(e) = window.next() {
+        window.draw_2d(&e, |c, g, device| {
+            app.on_render_new(c, g, &mut cache);
+
+            cache.factory.encoder.flush(device);
+        });
 
         if let Some(button) = e.press_args() {
             app.on_button_press(&button);
